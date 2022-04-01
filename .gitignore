@@ -50,3 +50,15 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#keil
+MDK-ARM/*/*.crf
+MDK-ARM/*/*.d
+MDK-ARM/*/*.o
+MDK-ARM/*/*.axf
+MDK-ARM/*/*.htm
+MDK-ARM/*/*.hex
+MDK-ARM/*/*.lnp
+MDK-ARM/*/*.map
+MDK-ARM/*/*.sct
+MDK-ARM/*/*.dep
