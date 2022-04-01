@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "bsp_motor.h"  
 
-static EventGroupHandle_t infra_red_Event_Handle =NULL;
+EventGroupHandle_t infra_red_Event_Handle =NULL;
 
 void infra_red_init(void )
 {
@@ -23,7 +23,7 @@ void check_app(void)
 	}
 	if(left_state==state_off && right_state== state_on)
 	{
-		right_run()
+		right_run();
 	}
 	if(left_state==state_on && right_state== state_off)
 	{
