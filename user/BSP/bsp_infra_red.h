@@ -14,7 +14,7 @@ extern EventGroupHandle_t infra_red_Event_Handle;
 
 #define left_state    HAL_GPIO_ReadPin(GPIOB,  left_check)
 #define right_state   HAL_GPIO_ReadPin(GPIOB,  right_check)
-
+/*红外接受到产生低电平，没接收到红外，产生高电平。*/
 #define state_on			GPIO_PIN_SET
 #define state_off			GPIO_PIN_RESET
 

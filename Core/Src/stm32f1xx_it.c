@@ -170,13 +170,9 @@ void DebugMon_Handler(void)
 /**
   * @brief This function handles EXTI line0 interrupt.
   */
-BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
-		/* 触发一个事件1 */
-	xEventGroupSetBitsFromISR(infra_red_Event_Handle,LeftCheck_EVENT,&xHigherPriorityTaskWoken);  	
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(infrared_sensor_left_Pin);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
@@ -190,8 +186,6 @@ void EXTI0_IRQHandler(void)
 void EXTI1_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI1_IRQn 0 */
-	/* 触发一个事件1 */
-	xEventGroupSetBitsFromISR(infra_red_Event_Handle,RightCheck_EVENT,&xHigherPriorityTaskWoken);  	
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(infrared_sensor_right_Pin);
   /* USER CODE BEGIN EXTI1_IRQn 1 */

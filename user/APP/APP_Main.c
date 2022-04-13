@@ -16,8 +16,8 @@ const osThreadAttr_t osID_Task01 = {
   .priority = (osPriority_t) osPriorityNormal,
 };
 
-void Task01(void * argument);
-osThreadId Task01_TaskHandle;
+void Task02(void * argument);
+osThreadId Task02_TaskHandle;
 const osThreadAttr_t osID_Task02 = {
   .name = "osID_Task02",
   .stack_size = 128 * 4,
@@ -30,7 +30,7 @@ void APP_Main(void) {
       //定义线程任务01
   Task01_TaskHandle = osThreadNew(Task01, NULL, &osID_Task01);//创建线程任务01
 	    //定义线程任务02
-  Task01_TaskHandle = osThreadNew(Task01, NULL, &osID_Task01);//创建线程任务01
+  Task02_TaskHandle = osThreadNew(Task02, NULL, &osID_Task02);//创建线程任务02
 
 
 }
@@ -74,16 +74,11 @@ void Task02(void * argument)
 			r_event = xEventGroupWaitBits(infra_red_Event_Handle,  /* 事件对象句柄 */
 																		LeftCheck_EVENT|RightCheck_EVENT,/* 接收线程感兴趣的事件 */
 																		pdTRUE,   /* 退出时清除事件位 */
-																		pdTRUE,   /* 满足感兴趣的所有事件 */
+																		pdFALSE,   /* 满足感兴趣的所有事件 */
 																		portMAX_DELAY);/* 指定超时事件,一直等 */
-													
-			if((r_event & (LeftCheck_EVENT|RightCheck_EVENT)) == (LeftCheck_EVENT|RightCheck_EVENT)) 
-			{
-				/* 如果接收完成并且正确 */
-				check_app();
-			}
-			else
-				printf ( "事件错误！\n");	
+			printf ( "r_event is %d \r\n",r_event);										
+			check_app();
+			printf ( "check_app成功\r\n");
 		}
 		osDelay(100);
   }
