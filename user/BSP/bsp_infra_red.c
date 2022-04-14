@@ -20,8 +20,8 @@ void check_app(void)
 {
 	if(left_state==state_on && right_state== state_on)
 	{
-		forward_run();
-		printf("forward_run();\r\n");
+		car_stop();
+		printf("car_stop();\r\n");
 	}
 	if(left_state==state_off && right_state== state_on)
 	{
@@ -35,8 +35,8 @@ void check_app(void)
 	}
 	if(left_state==state_off && right_state== state_off)
 	{
-		car_stop();
-		printf("car_stop();\r\n");
+		forward_run();
+		printf("forward_run();\r\n");
 	}
 	
 }

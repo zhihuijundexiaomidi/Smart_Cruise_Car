@@ -80,7 +80,7 @@ void Task02(void * argument)
 			check_app();
 			printf ( "check_app³É¹¦\r\n");
 		}
-		osDelay(100);
+//		osDelay(100);
   }
 }
 

@@ -1,6 +1,6 @@
 #include "bsp_motor.h"  
 
-#define base_speed  50
+#define base_speed  10
 #define left_fix_speed 0
 #define right_fix_speed 0
 
