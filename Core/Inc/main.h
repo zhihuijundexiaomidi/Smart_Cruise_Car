@@ -79,10 +79,16 @@ void Error_Handler(void);
 #define TB6612_B1_GPIO_Port GPIOB
 #define TB6612_B0_Pin GPIO_PIN_15
 #define TB6612_B0_GPIO_Port GPIOB
+#define SPI_IRQ_Pin GPIO_PIN_8
+#define SPI_IRQ_GPIO_Port GPIOA
 #define DEBUG_T_Pin GPIO_PIN_9
 #define DEBUG_T_GPIO_Port GPIOA
 #define DEBUG_R_Pin GPIO_PIN_10
 #define DEBUG_R_GPIO_Port GPIOA
+#define SPI_CE_Pin GPIO_PIN_11
+#define SPI_CE_GPIO_Port GPIOA
+#define SPI_CSN_Pin GPIO_PIN_12
+#define SPI_CSN_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

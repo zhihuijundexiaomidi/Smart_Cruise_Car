@@ -7,6 +7,8 @@
 #include "bsp_led.h"  
 #include "bsp_infra_red.h"
 #include "bsp_debug.h"
+#include "bsp_nrf24l01.h"
+#include "bsp_SG90.h"  
 
 void Task01(void * argument);
 osThreadId Task01_TaskHandle;
@@ -24,14 +26,23 @@ const osThreadAttr_t osID_Task02 = {
   .priority = (osPriority_t) osPriorityNormal7,
 };
 
+void Task03(void * argument);
+osThreadId Task03_TaskHandle;
+const osThreadAttr_t osID_Task03 = {
+  .name = "osID_Task03",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal6,
+};
+
 void APP_Main(void) {
 
 	infra_red_init();
       //定义线程任务01
   Task01_TaskHandle = osThreadNew(Task01, NULL, &osID_Task01);//创建线程任务01
-	    //定义线程任务02
+//	    //定义线程任务02
   Task02_TaskHandle = osThreadNew(Task02, NULL, &osID_Task02);//创建线程任务02
-
+    //定义线程任务03
+//  Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务02
 
 }
 
@@ -40,7 +51,7 @@ void APP_Main(void) {
 
 void Task01(void * argument)
 {
-
+		steering_engine_PWM(950);//中间右极致
   for(;;)
   {
 		led_twinkle(100);
@@ -52,7 +63,7 @@ void Task02(void * argument)
 		EventBits_t r_event;  /* 定义一个事件接收变量 */
   for(;;)
   {
-		
+		check_app();
 		/* 任务都是一个无限循环，不能返回 */
 		while (1)
 		{
@@ -76,13 +87,43 @@ void Task02(void * argument)
 																		pdTRUE,   /* 退出时清除事件位 */
 																		pdFALSE,   /* 满足感兴趣的所有事件 */
 																		portMAX_DELAY);/* 指定超时事件,一直等 */
-			printf ( "r_event is %d \r\n",r_event);										
+//			printf ( "r_event is %d \r\n",r_event);										
 			check_app();
-			printf ( "check_app成功\r\n");
+//			printf ( "check_app成功\r\n");
 		}
 //		osDelay(100);
   }
 }
 
-
+void Task03(void * argument)
+{
+	static unsigned int t=0;
+  u8 rx_buf[33]="www.prechin.cn";
+	NRF24L01_Init();	
+	NRF24L01_RX_Mode();	
+	while(NRF24L01_Check())	 //检测NRF24L01是否存在
+	{
+		printf("Error   \r\n");			
+	}
+	printf("Success   \r\n");
+  for(;;)
+  {
+		if(NRF24L01_RxPacket(rx_buf)==0) //接收到数据显示
+			{
+				rx_buf[32]='\0';
+			  printf("%s",rx_buf);		
+			}
+			else
+			{
+				osDelay(1);
+			}
+			t++;
+			if(t>=1000)
+			{
+				t=0;
+				printf("1S   \r\n");			
+			}	
+//		osDelay(100);
+  }
+}
 

@@ -21,22 +21,22 @@ void check_app(void)
 	if(left_state==state_on && right_state== state_on)
 	{
 		car_stop();
-		printf("car_stop();\r\n");
+//		printf("car_stop();\r\n");
 	}
 	if(left_state==state_off && right_state== state_on)
 	{
 		right_run();
-		printf("right_run();\r\n");
+//		printf("right_run();\r\n");
 	}
 	if(left_state==state_on && right_state== state_off)
 	{
 		left_run();
-		printf("left_run();\r\n");
+//		printf("left_run();\r\n");
 	}
 	if(left_state==state_off && right_state== state_off)
 	{
 		forward_run();
-		printf("forward_run();\r\n");
+//		printf("forward_run();\r\n");
 	}
 	
 }
