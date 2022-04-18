@@ -10,6 +10,7 @@
       <TargetName>Control_handle</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pArmCC>5060960::V5.06 update 7 (build 960)::.\ARMCC</pArmCC>
       <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
@@ -339,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../user/APP;../user/BSP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -596,6 +597,66 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>User/APP</GroupName>
+          <Files>
+            <File>
+              <FileName>APP_Main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\APP\APP_Main.c</FilePath>
+            </File>
+            <File>
+              <FileName>APP_Main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\APP\APP_Main.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>User/BSP</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp_debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\BSP\bsp_debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_debug.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\BSP\bsp_debug.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\BSP\bsp_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\BSP\bsp_led.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_oled096_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\BSP\bsp_oled096_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_oled096_spi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\BSP\bsp_oled096_spi.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_oled096_spi_font.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\BSP\bsp_oled096_spi_font.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_oled096_spi_BMP.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\BSP\bsp_oled096_spi_BMP.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -614,5 +675,14 @@
     </components>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>Control_handle</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>
