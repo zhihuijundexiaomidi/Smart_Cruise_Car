@@ -11,8 +11,7 @@
 #define __bsp_oled096_spi_H			  	 
 #include "main.h"
 #include "stdlib.h"	 
-typedef uint8_t   u8;
-typedef uint32_t  u32;   	
+  	
 //OLED模式设置
 //0:4线串行模式
 //1:并行8080模式

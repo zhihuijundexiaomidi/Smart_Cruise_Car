@@ -31,11 +31,15 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "FreeRTOS.h"
+#include "cmsis_os.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+typedef uint8_t   u8;
+typedef uint32_t  u32; 
+typedef uint16_t  u16;
 
 /* USER CODE END ET */
 
@@ -69,8 +73,12 @@ void Error_Handler(void);
 #define OLED_RET_GPIO_Port GPIOB
 #define OLED_DC_Pin GPIO_PIN_1
 #define OLED_DC_GPIO_Port GPIOB
+#define MPU_IIC_SCL_Pin GPIO_PIN_10
+#define MPU_IIC_SCL_GPIO_Port GPIOB
+#define MPU_IIC_SDA_Pin GPIO_PIN_11
+#define MPU_IIC_SDA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+#define delay_ms(x) osDelay(x)
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

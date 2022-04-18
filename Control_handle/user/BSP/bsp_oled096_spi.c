@@ -11,10 +11,7 @@
 #include "bsp_oled096_spi.h"
 #include "bsp_oled096_spi_font.h"  	 
 
-#include "FreeRTOS.h"
-#include "cmsis_os.h"
 
-#define delay_ms(x) osDelay(x)
 //OLED的显存
 //存放格式如下.
 //[0]0 1 2 3 ... 127	
