@@ -104,23 +104,29 @@ void OLED_Clear(void)
 //x:0~127
 //y:0~63
 //mode:0,反白显示;1,正常显示				 
-//size:选择字体 16/12 
-void OLED_ShowChar(u8 x,u8 y,u8 chr)
+//size:选择字体 16/12 //16是12的双倍y位移。
+void OLED_ShowChar(u8 x,u8 y,u8 chr, u8 size)
 {      	
 	unsigned char c=0,i=0;	
 		c=chr-' ';//得到偏移后的值			
 		if(x>Max_Column-1){x=0;y=y+2;}
-		if(SIZE ==16)
+		  if(size ==16)
 			{
-			OLED_Set_Pos(x,y);	
-			for(i=0;i<8;i++)
-			OLED_WR_Byte(F8X16[c*16+i],OLED_DATA);
-			OLED_Set_Pos(x,y+1);
-			for(i=0;i<8;i++)
-			OLED_WR_Byte(F8X16[c*16+i+8],OLED_DATA);
+					y=2*y;
+					OLED_Set_Pos(x,y);	
+					for(i=0;i<8;i++)
+					{
+						OLED_WR_Byte(F8X16[c*16+i],OLED_DATA);
+					}
+					OLED_Set_Pos(x,y+1);
+					for(i=0;i<8;i++)
+					{
+						OLED_WR_Byte(F8X16[c*16+i+8],OLED_DATA);
+					}
 			}
-			else {	
-				OLED_Set_Pos(x,y+1);
+			else 
+     {	
+				OLED_Set_Pos(x,y);
 				for(i=0;i<6;i++)
 				OLED_WR_Byte(F6x8[c][i],OLED_DATA);
 				
@@ -150,23 +156,35 @@ void OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size)
 		{
 			if(temp==0)
 			{
-				OLED_ShowChar(x+(size/2)*t,y,' ');
+				OLED_ShowChar(x+(size/2)*t,y,' ',size);
 				continue;
 			}else enshow=1; 
 		 	 
 		}
-	 	OLED_ShowChar(x+(size/2)*t,y,temp+'0'); 
+	 	OLED_ShowChar(x+(size/2)*t,y,temp+'0',size); 
 	}
 } 
+
 //显示一个字符号串
-void OLED_ShowString(u8 x,u8 y,u8 *chr)
+void OLED_ShowString(u8 x,u8 y,u8 *chr,u8 size)
 {
 	unsigned char j=0;
 	while (chr[j]!='\0')
-	{		OLED_ShowChar(x,y,chr[j]);
-			x+=8;
-		if(x>120){x=0;y+=2;}
-			j++;
+	{
+			if(size==16)
+			{
+				OLED_ShowChar(x,y,chr[j],size);
+					x+=8;
+				if(x>120){x=0;y+=2;}
+				j++;
+			}
+			if(size==12)
+			{
+				OLED_ShowChar(x,y,chr[j],size);
+					x+=8;
+				if(x>120){x=0;y+=2;}
+				j++;
+			}
 	}
 }
 //显示汉字
@@ -187,6 +205,8 @@ void OLED_ShowCHinese(u8 x,u8 y,u8 no)
       }					
 }
 /***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
+//Y0:控制y轴，一个数值移动8个像素。从上往下y1：控制y轴显示多少，最大8，全部显示，4，显示一半。从上自下
+//x0：为0，加大，会右旋转变形图像，x1：为128.
 void OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned char y1,unsigned char BMP[])
 { 	
  unsigned int j=0;

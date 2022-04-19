@@ -4,6 +4,11 @@
 #include "mpuiic.h"												  	  
 #include "main.h" 
 	
+extern  float pitch,roll,yaw; 		//欧拉角
+extern	short aacx,aacy,aacz;		//加速度传感器原始数据
+extern	short gyrox,gyroy,gyroz;	//陀螺仪原始数据
+extern	short temp;					//温度
+
 
 //MPU6050 AD0控制脚
 //#define MPU_AD0_CTRL			PAout(15)	//控制AD0电平,从而控制MPU地址

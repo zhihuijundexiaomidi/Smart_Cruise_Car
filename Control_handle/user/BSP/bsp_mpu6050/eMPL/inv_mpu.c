@@ -1781,8 +1781,7 @@ int mpu_read_fifo(short *gyro, short *accel, unsigned long *timestamp,
  *  @param[in]  data    FIFO packet.
  *  @param[in]  more    Number of remaining packets.
  */
-int mpu_read_fifo_stream(unsigned short length, unsigned char *data,
-    unsigned char *more)
+int mpu_read_fifo_stream(unsigned short length, unsigned char *data,    unsigned char *more)
 {
     unsigned char tmp[2];
     unsigned short fifo_count;

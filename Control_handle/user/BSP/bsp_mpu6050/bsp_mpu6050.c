@@ -1,5 +1,10 @@
 #include "bsp_mpu6050.h"
 
+float pitch,roll,yaw; 		//欧拉角
+short aacx,aacy,aacz;		//加速度传感器原始数据
+short gyrox,gyroy,gyroz;	//陀螺仪原始数据
+short temp;					//温度
+
 
 //初始化MPU6050
 //返回值:0,成功
