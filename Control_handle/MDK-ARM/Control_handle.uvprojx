@@ -770,6 +770,16 @@
               <FileType>5</FileType>
               <FilePath>..\user\BSP\bsp_mpu6050\mpuiic.h</FilePath>
             </File>
+            <File>
+              <FileName>bsp_nrf24l01.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\BSP\bsp_nrf24l01.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_nrf24l01.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\BSP\bsp_nrf24l01.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

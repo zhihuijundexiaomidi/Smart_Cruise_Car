@@ -31,7 +31,7 @@ u8 NRF24L01_Check(void)
 uint8_t SPI1_ReadWriteByte(uint8_t TxData)//发送一个字节，并从寄存器返回一个字节
 {
 	uint8_t Rxdata;
-	HAL_SPI_TransmitReceive(&hspi1, &TxData, &Rxdata, 1, 1000);       
+	HAL_SPI_TransmitReceive(&hspi2, &TxData, &Rxdata, 1, 1000);       
  	return Rxdata;          		    
 }
 

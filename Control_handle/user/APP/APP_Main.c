@@ -11,7 +11,7 @@
 #include "bsp_mpu6050.h"
 #include "inv_mpu.h"
 #include "inv_mpu_dmp_motion_driver.h" 
-
+#include "bsp_nrf24l01.h"
 
 void Task01(void * argument);
 osThreadId Task01_TaskHandle;
@@ -37,14 +37,24 @@ const osThreadAttr_t osID_Task03 = {
   .priority = (osPriority_t) osPriorityNormal6,
 };
 
+void Task04(void * argument);
+osThreadId Task04_TaskHandle;
+const osThreadAttr_t osID_Task04 = {
+  .name = "osID_Task04",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal5,
+};
+
 void APP_Main(void) {
 
       //定义线程任务01
   Task01_TaskHandle = osThreadNew(Task01, NULL, &osID_Task01);//创建线程任务01
-//	    //定义线程任务02
+////	    //定义线程任务02
   Task02_TaskHandle = osThreadNew(Task02, NULL, &osID_Task02);//创建线程任务02
     //定义线程任务03
-  Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务02
+  Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务03
+	  //定义线程任务04
+  Task04_TaskHandle = osThreadNew(Task04, NULL, &osID_Task04);//创建线程任务04
 
 }
 
@@ -121,6 +131,28 @@ void Task03(void * argument)
 //				printf ("得到欧角:pitch：%0.1f\r\n roll：%0.1f\r\n yaw：%0.1f\r\n",pitch,roll,yaw);
 		}
 		osDelay(100);
+  }
+}
+
+void Task04(void * argument)
+{
+  u8 rx_buf[33]="www.prechin.cn";
+  u8 count=0;
+	NRF24L01_Init();
+	while(NRF24L01_Check())	//检测NRF24L01是否存在
+	{
+			printf("NRF24L01_Check erro \r\n");
+			osDelay(1000);
+	}
+
+	NRF24L01_TX_Mode();
+  for(;;)
+  {
+		sprintf((char*)rx_buf,"%d",count);
+		NRF24L01_TxPacket(rx_buf);
+    printf("NRF24L01_TxPacket suc \r\n");
+    count++;
+		osDelay(1000);
   }
 }
 

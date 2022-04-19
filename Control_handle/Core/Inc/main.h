@@ -77,6 +77,12 @@ void Error_Handler(void);
 #define MPU_IIC_SCL_GPIO_Port GPIOB
 #define MPU_IIC_SDA_Pin GPIO_PIN_11
 #define MPU_IIC_SDA_GPIO_Port GPIOB
+#define SPI_IRQ_Pin GPIO_PIN_3
+#define SPI_IRQ_GPIO_Port GPIOB
+#define SPI_CE_Pin GPIO_PIN_4
+#define SPI_CE_GPIO_Port GPIOB
+#define SPI_CSN_Pin GPIO_PIN_5
+#define SPI_CSN_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 #define delay_ms(x) osDelay(x)
 /* USER CODE END Private defines */
