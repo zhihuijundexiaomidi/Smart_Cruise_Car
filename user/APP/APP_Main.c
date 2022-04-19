@@ -23,7 +23,7 @@ osThreadId Task02_TaskHandle;
 const osThreadAttr_t osID_Task02 = {
   .name = "osID_Task02",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal7,
+  .priority = (osPriority_t) osPriorityHigh7,
 };
 
 void Task03(void * argument);
@@ -87,6 +87,7 @@ void Task02(void * argument)
 																		pdTRUE,   /* 退出时清除事件位 */
 																		pdFALSE,   /* 满足感兴趣的所有事件 */
 																		portMAX_DELAY);/* 指定超时事件,一直等 */
+      
 //			printf ( "r_event is %d \r\n",r_event);										
 			check_app();
 //			printf ( "check_app成功\r\n");
