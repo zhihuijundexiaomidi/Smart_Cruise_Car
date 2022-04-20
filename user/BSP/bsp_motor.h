@@ -7,12 +7,12 @@
 //轮子的速度	tim3的通道1或通道2
 extern TIM_HandleTypeDef htim3;
 
-#define left_wheel_speed(x)			if(x>=0&&x<=100) \
-	{__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,x);HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);printf("left_wheel_speed %d 成功!\r\n",x);} \
+#define left_wheel_speed(x)			if(x>=0&&x<=360) \
+	{__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,x);HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);} \
 	else \
 	{printf("left_wheel_speed 失败!\r\n");}
-#define right_wheel_speed(x)	  if(x>=0&&x<=100) \
-	{__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2,x);HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);printf("right_wheel_speed %d 成功!\r\n",x);} \
+#define right_wheel_speed(x)	  if(x>=0&&x<=360) \
+	{__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2,x);HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);} \
 	else \
 	{printf("right_wheel_speed 失败!\r\n");}
 

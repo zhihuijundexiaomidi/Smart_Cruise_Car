@@ -34,16 +34,25 @@ const osThreadAttr_t osID_Task03 = {
   .priority = (osPriority_t) osPriorityNormal6,
 };
 
-void APP_Main(void) {
+void Task04(void * argument);
+osThreadId Task04_TaskHandle;
+const osThreadAttr_t osID_Task04 = {
+  .name = "osID_Task04",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal6,
+};
 
-	infra_red_init();
+void APP_Main(void) 
+{
+	infra_red_init();//这是创建事件，如果中断触发的时候，事件还没有创建，程序会宕机。
       //定义线程任务01
   Task01_TaskHandle = osThreadNew(Task01, NULL, &osID_Task01);//创建线程任务01
 //	    //定义线程任务02
   Task02_TaskHandle = osThreadNew(Task02, NULL, &osID_Task02);//创建线程任务02
     //定义线程任务03
-//  Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务02
-
+//  Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务03
+//	    //定义线程任务04
+  Task04_TaskHandle = osThreadNew(Task04, NULL, &osID_Task04);//创建线程任务04
 }
 
 
@@ -125,6 +134,26 @@ void Task03(void * argument)
 				printf("1S   \r\n");			
 			}	
 //		osDelay(100);
+  }
+}
+
+void Task04(void * argument)
+{
+
+	HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_ALL);
+  HAL_TIM_Encoder_Start(&htim4,TIM_CHANNEL_ALL);
+  uint16_t ecValue01 = __HAL_TIM_GET_COUNTER(&htim2) ; 
+  uint8_t direction01 = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim2); 
+  uint16_t ecValue02 = __HAL_TIM_GET_COUNTER(&htim4) ; 
+  uint8_t direction02 = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4); 
+  for(;;)
+  {
+		 ecValue01 = __HAL_TIM_GET_COUNTER(&htim2) ; 
+		 direction01 = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim2); 
+		 ecValue02 = __HAL_TIM_GET_COUNTER(&htim4) ; 
+		 direction02 = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4); 
+		printf("%d,%d,%d,%d \r\n",ecValue01,direction01,ecValue02,direction02);
+		osDelay(1000);
   }
 }
 

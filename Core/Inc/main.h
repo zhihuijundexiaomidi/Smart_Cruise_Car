@@ -59,8 +59,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LED_Pin GPIO_PIN_13
 #define LED_GPIO_Port GPIOC
-#define steering_engine_PWM_Pin GPIO_PIN_1
-#define steering_engine_PWM_GPIO_Port GPIOA
+#define TB6612_E1A_Pin GPIO_PIN_0
+#define TB6612_E1A_GPIO_Port GPIOA
+#define TB6612_E1B_Pin GPIO_PIN_1
+#define TB6612_E1B_GPIO_Port GPIOA
 #define motorA_PWM_Pin GPIO_PIN_6
 #define motorA_PWM_GPIO_Port GPIOA
 #define motorB_PWM_Pin GPIO_PIN_7
@@ -71,6 +73,8 @@ void Error_Handler(void);
 #define infrared_sensor_right_Pin GPIO_PIN_1
 #define infrared_sensor_right_GPIO_Port GPIOB
 #define infrared_sensor_right_EXTI_IRQn EXTI1_IRQn
+#define SPI_IRQ_Pin GPIO_PIN_2
+#define SPI_IRQ_GPIO_Port GPIOB
 #define TB6612_A1_Pin GPIO_PIN_12
 #define TB6612_A1_GPIO_Port GPIOB
 #define TB6612_A0_Pin GPIO_PIN_13
@@ -79,8 +83,8 @@ void Error_Handler(void);
 #define TB6612_B1_GPIO_Port GPIOB
 #define TB6612_B0_Pin GPIO_PIN_15
 #define TB6612_B0_GPIO_Port GPIOB
-#define SPI_IRQ_Pin GPIO_PIN_8
-#define SPI_IRQ_GPIO_Port GPIOA
+#define steering_engine_PWM_Pin GPIO_PIN_8
+#define steering_engine_PWM_GPIO_Port GPIOA
 #define DEBUG_T_Pin GPIO_PIN_9
 #define DEBUG_T_GPIO_Port GPIOA
 #define DEBUG_R_Pin GPIO_PIN_10
@@ -89,6 +93,10 @@ void Error_Handler(void);
 #define SPI_CE_GPIO_Port GPIOA
 #define SPI_CSN_Pin GPIO_PIN_12
 #define SPI_CSN_GPIO_Port GPIOA
+#define TB6612_E2A_Pin GPIO_PIN_6
+#define TB6612_E2A_GPIO_Port GPIOB
+#define TB6612_E2B_Pin GPIO_PIN_7
+#define TB6612_E2B_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

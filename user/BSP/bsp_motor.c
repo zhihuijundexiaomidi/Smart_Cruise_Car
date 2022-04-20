@@ -1,7 +1,7 @@
 #include "bsp_motor.h"  
 #include "bsp_SG90.h"  
 
-#define base_speed  20
+#define base_speed  100
 #define left_fix_speed 0
 #define right_fix_speed 0
 #define turn_fix_speed	60//转弯速度不够快。会跑出轨道

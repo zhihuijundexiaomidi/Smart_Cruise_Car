@@ -11,7 +11,7 @@
 2.5/0.001=2500
 ********************************************************/
 #define steering_engine_PWM(x)			if(x>=500&&x<=2500) \
-	{__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2,x);HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_2);printf("left_wheel_speed %d ³É¹¦!\r\n",x);} \
+	{__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1,x);HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);} \
 	else \
 	{printf("left_wheel_speed Ê§°Ü!\r\n");}
 #endif /* _BSP_SG90_H */
