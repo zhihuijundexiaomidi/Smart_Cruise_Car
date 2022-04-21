@@ -10,6 +10,7 @@
 #include "bsp_nrf24l01.h"
 #include "bsp_SG90.h"  
 #include "bsp_encoder.h"  
+#include "bsp_motor.h" 
 
 void Task01(void * argument);
 osThreadId Task01_TaskHandle;
@@ -32,7 +33,7 @@ osThreadId Task03_TaskHandle;
 const osThreadAttr_t osID_Task03 = {
   .name = "osID_Task03",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal6,
+  .priority = (osPriority_t) osPriorityNormal7,
 };
 
 void Task04(void * argument);
@@ -43,9 +44,16 @@ const osThreadAttr_t osID_Task04 = {
   .priority = (osPriority_t) osPriorityNormal6,
 };
 
+void Task05(void * argument);
+osThreadId Task05_TaskHandle;
+const osThreadAttr_t osID_Task05 = {
+  .name = "osID_Task05",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityHigh6,
+};
+
 void APP_Main(void) 
 {
-	infra_red_init();//这是创建事件，如果中断触发的时候，事件还没有创建，程序会宕机。
       //定义线程任务01
   Task01_TaskHandle = osThreadNew(Task01, NULL, &osID_Task01);//创建线程任务01
 //	    //定义线程任务02
@@ -54,6 +62,7 @@ void APP_Main(void)
 //  Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务03
 //	    //定义线程任务04
   Task04_TaskHandle = osThreadNew(Task04, NULL, &osID_Task04);//创建线程任务04
+	Task05_TaskHandle = osThreadNew(Task05, NULL, &osID_Task05);//创建线程任务05
 }
 
 
@@ -71,6 +80,7 @@ void Task01(void * argument)
 void Task02(void * argument)
 {
 		EventBits_t r_event;  /* 定义一个事件接收变量 */
+		infra_red_init();//这是创建事件，如果中断触发的时候，事件还没有创建，程序会宕机。（在中断中做了事件存在判断，不会死机了）
   for(;;)
   {
 		check_app();
@@ -151,8 +161,21 @@ void Task04(void * argument)
 		 direction01 = get_left_direction; 
 		 ecValue02 = get_right_encoder ; 
 		 direction02 = get_right_direction; 
-		printf("%d,%d,%d,%d \r\n",ecValue01,direction01,ecValue02,direction02);
+//		printf("%d,%d,%d,%d \r\n",ecValue01,direction01,ecValue02,direction02);printf("speed: %d \r\n",base_speed);
 		osDelay(1000);
   }
 }
 
+void Task05(void * argument)
+{
+	uint32_t tick;
+  for(;;)
+  {		
+  	tick = osKernelGetTickCount();        // 获取当前系统的时间
+	  tick += 10U;                      // 绝对延时1000个Systick
+    osDelayUntil(tick);
+		PID_REFLASH(0);
+		PID_REFLASH(1);
+//		back_run();
+  }
+}

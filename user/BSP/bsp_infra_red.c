@@ -45,14 +45,17 @@ BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   /* Prevent unused argument(s) compilation warning */
-  switch(GPIO_Pin)
+	if(infra_red_Event_Handle!=NULL)
 	{
-		case infrared_sensor_left_Pin:
-			xEventGroupSetBitsFromISR(infra_red_Event_Handle,LeftCheck_EVENT,&xHigherPriorityTaskWoken);
-		  break ;
-		case infrared_sensor_right_Pin:
-			xEventGroupSetBitsFromISR(infra_red_Event_Handle,RightCheck_EVENT,&xHigherPriorityTaskWoken); 
-			break ;
+		switch(GPIO_Pin)
+		{
+			case infrared_sensor_left_Pin:
+				xEventGroupSetBitsFromISR(infra_red_Event_Handle,LeftCheck_EVENT,&xHigherPriorityTaskWoken);
+				break ;
+			case infrared_sensor_right_Pin:
+				xEventGroupSetBitsFromISR(infra_red_Event_Handle,RightCheck_EVENT,&xHigherPriorityTaskWoken); 
+				break ;
+		}
 	}
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_GPIO_EXTI_Callback could be implemented in the user file

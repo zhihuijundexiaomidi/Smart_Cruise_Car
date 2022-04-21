@@ -3,15 +3,15 @@
 
 #include "main.h"
 #include <stdio.h>
-
+extern int base_speed;
 //轮子的速度	tim3的通道1或通道2
 extern TIM_HandleTypeDef htim3;
 
-#define left_wheel_speed(x)			if(x>=0&&x<=360) \
+#define left_wheel_speed(x)			if(x>=0&&x<=7200) \
 	{__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1,x);HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);} \
 	else \
 	{printf("left_wheel_speed 失败!\r\n");}
-#define right_wheel_speed(x)	  if(x>=0&&x<=360) \
+#define right_wheel_speed(x)	  if(x>=0&&x<=7200) \
 	{__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2,x);HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);} \
 	else \
 	{printf("right_wheel_speed 失败!\r\n");}
