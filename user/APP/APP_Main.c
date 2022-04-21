@@ -9,6 +9,7 @@
 #include "bsp_debug.h"
 #include "bsp_nrf24l01.h"
 #include "bsp_SG90.h"  
+#include "bsp_encoder.h"  
 
 void Task01(void * argument);
 osThreadId Task01_TaskHandle;
@@ -139,19 +140,17 @@ void Task03(void * argument)
 
 void Task04(void * argument)
 {
-
-	HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_ALL);
-  HAL_TIM_Encoder_Start(&htim4,TIM_CHANNEL_ALL);
-  uint16_t ecValue01 = __HAL_TIM_GET_COUNTER(&htim2) ; 
-  uint8_t direction01 = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim2); 
-  uint16_t ecValue02 = __HAL_TIM_GET_COUNTER(&htim4) ; 
-  uint8_t direction02 = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4); 
+	Encoder_Start();
+  uint16_t ecValue01 = get_left_encoder;
+  uint8_t direction01 = get_left_direction;
+  uint16_t ecValue02 = get_right_encoder;
+  uint8_t direction02 = get_right_direction;
   for(;;)
   {
-		 ecValue01 = __HAL_TIM_GET_COUNTER(&htim2) ; 
-		 direction01 = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim2); 
-		 ecValue02 = __HAL_TIM_GET_COUNTER(&htim4) ; 
-		 direction02 = __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4); 
+		 ecValue01 = get_left_encoder ; 
+		 direction01 = get_left_direction; 
+		 ecValue02 = get_right_encoder ; 
+		 direction02 = get_right_direction; 
 		printf("%d,%d,%d,%d \r\n",ecValue01,direction01,ecValue02,direction02);
 		osDelay(1000);
   }
