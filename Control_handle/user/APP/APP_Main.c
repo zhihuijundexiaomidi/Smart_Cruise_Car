@@ -76,7 +76,7 @@ void Task02(void * argument)
 	char str[10]="";
 	OLED_Init();			//初始化OLED  
 	OLED_Clear()  	;  
-	OLED_DrawBMP(0,2,128,4,BMP1);
+	OLED_DrawBMP(0,2,128,8,BMP1);
   osDelay(1000);
   OLED_Clear();
   OLED_ShowString(0,0,"temp:    ",12);
@@ -85,13 +85,13 @@ void Task02(void * argument)
   OLED_ShowString(0,3,"yaw:     ",12);
   for(;;)
   {
-		sprintf(str,"%d",temp);
+		sprintf(str,"%d     ",temp);
 		OLED_ShowString(40,0,(u8*)str,12);
-		sprintf(str,"%0.1f",pitch);
+		sprintf(str,"%0.1f    ",pitch);
 		OLED_ShowString(48,1,(u8*)str,12);
-		sprintf(str,"%0.1f",roll);
+		sprintf(str,"%0.1f    ",roll);
 		OLED_ShowString(40,2,(u8*)str,12);
-		sprintf(str,"%0.1f",yaw);
+		sprintf(str,"%0.1f    ",yaw);
 		OLED_ShowString(32,3,(u8*)str,12);
 		osDelay(1000);
   }
@@ -148,7 +148,9 @@ void Task04(void * argument)
 	NRF24L01_TX_Mode();
   for(;;)
   {
-		sprintf((char*)rx_buf,"%d",count);
+		//pitch	X轴
+		if(pitch>10)//往上抬手
+		sprintf((char*)rx_buf,"AT+CarControl=%d",count);
 		NRF24L01_TxPacket(rx_buf);
     printf("NRF24L01_TxPacket suc \r\n");
     count++;
