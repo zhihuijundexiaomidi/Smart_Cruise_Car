@@ -85,7 +85,7 @@ int Position_FeedbackControl(float Circle, int CurrentPosition)
 		static float Last_bias, Integral_Bias;          //静态变量，函数调用结束后其值依然存在
 		
 	  TargetPosition=Circle*1560*1.01; //目标位置=目标圈数*1560
-	                              //10ms读取一次编码器(即100HZ)，电机减速比为20，霍尔编码器精度13，AB双相组合得到4倍频，
+	                              //10ms读取一次编码器(即100HZ)，电机减速比为30，霍尔编码器精度13，AB双相组合得到4倍频，
 	                              //则转1圈编码器读数为30*13*4=1560，电机转速=Encoder*100/1560r/s 
 	                              //1.01是误差系数，电机本身存在误差，可根据实际情况调整该系数以提高控制精度
 	

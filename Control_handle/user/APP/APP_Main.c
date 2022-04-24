@@ -85,7 +85,7 @@ void Task02(void * argument)
   OLED_ShowString(0,3,"yaw:     ",12);
   for(;;)
   {
-		sprintf(str,"%d     ",temp);
+		sprintf(str,"%0.2f     ",temp);
 		OLED_ShowString(40,0,(u8*)str,12);
 		sprintf(str,"%0.1f    ",pitch);
 		OLED_ShowString(48,1,(u8*)str,12);
@@ -137,7 +137,6 @@ void Task03(void * argument)
 void Task04(void * argument)
 {
   u8 rx_buf[33]="www.prechin.cn";
-  u8 count=0;
 	NRF24L01_Init();
 	while(NRF24L01_Check())	//检测NRF24L01是否存在
 	{
@@ -148,13 +147,10 @@ void Task04(void * argument)
 	NRF24L01_TX_Mode();
   for(;;)
   {
-		//pitch	X轴
-		if(pitch>10)//往上抬手
-		sprintf((char*)rx_buf,"AT+CarControl=%d",count);
+		sprintf((char*)rx_buf,"AT+MPU6050=pitch:%0.1f,roll:%0.1f,yaw:%0.1f \r\n",pitch,roll,yaw);
 		NRF24L01_TxPacket(rx_buf);
-    printf("NRF24L01_TxPacket suc \r\n");
-    count++;
-		osDelay(1000);
+//    printf("NRF24L01_TxPacket suc \r\n");
+		osDelay(200);
   }
 }
 

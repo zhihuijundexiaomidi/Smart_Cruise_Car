@@ -57,12 +57,12 @@ void APP_Main(void)
       //定义线程任务01
   Task01_TaskHandle = osThreadNew(Task01, NULL, &osID_Task01);//创建线程任务01
 //	    //定义线程任务02
-  Task02_TaskHandle = osThreadNew(Task02, NULL, &osID_Task02);//创建线程任务02
+//  Task02_TaskHandle = osThreadNew(Task02, NULL, &osID_Task02);//创建线程任务02
     //定义线程任务03
-//  Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务03
+  Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务03
 //	    //定义线程任务04
-  Task04_TaskHandle = osThreadNew(Task04, NULL, &osID_Task04);//创建线程任务04
-	Task05_TaskHandle = osThreadNew(Task05, NULL, &osID_Task05);//创建线程任务05
+//  Task04_TaskHandle = osThreadNew(Task04, NULL, &osID_Task04);//创建线程任务04
+//	Task05_TaskHandle = osThreadNew(Task05, NULL, &osID_Task05);//创建线程任务05
 }
 
 
@@ -121,12 +121,13 @@ void Task03(void * argument)
 	static unsigned int t=0;
   u8 rx_buf[33]="www.prechin.cn";
 	NRF24L01_Init();	
-	NRF24L01_RX_Mode();	
 	while(NRF24L01_Check())	 //检测NRF24L01是否存在
 	{
-		printf("Error   \r\n");			
+		printf("Error   \r\n");	
+		osDelay(1000);		
 	}
 	printf("Success   \r\n");
+  NRF24L01_RX_Mode();	
   for(;;)
   {
 		if(NRF24L01_RxPacket(rx_buf)==0) //接收到数据显示
@@ -136,36 +137,35 @@ void Task03(void * argument)
 			}
 			else
 			{
-				osDelay(1);
+				osDelay(100);
 			}
 			t++;
-			if(t>=1000)
+			if(t>=10)
 			{
 				t=0;
 				printf("1S   \r\n");			
 			}	
-//		osDelay(100);
   }
 }
-
+//编码器开始工作
 void Task04(void * argument)
 {
 	Encoder_Start();
-  uint16_t ecValue01 = get_left_encoder;
-  uint8_t direction01 = get_left_direction;
-  uint16_t ecValue02 = get_right_encoder;
-  uint8_t direction02 = get_right_direction;
+//  uint16_t ecValue01 = get_left_encoder;
+//  uint8_t direction01 = get_left_direction;
+//  uint16_t ecValue02 = get_right_encoder;
+//  uint8_t direction02 = get_right_direction;
   for(;;)
   {
-		 ecValue01 = get_left_encoder ; 
-		 direction01 = get_left_direction; 
-		 ecValue02 = get_right_encoder ; 
-		 direction02 = get_right_direction; 
+//		 ecValue01 = get_left_encoder ; 
+//		 direction01 = get_left_direction; 
+//		 ecValue02 = get_right_encoder ; 
+//		 direction02 = get_right_direction; 
 //		printf("%d,%d,%d,%d \r\n",ecValue01,direction01,ecValue02,direction02);printf("speed: %d \r\n",base_speed);
 		osDelay(1000);
   }
 }
-
+//实现左轮右轮的pid速度刷新
 void Task05(void * argument)
 {
 	uint32_t tick;

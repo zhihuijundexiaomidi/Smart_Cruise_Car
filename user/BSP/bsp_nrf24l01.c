@@ -20,7 +20,7 @@ u8 NRF24L01_Check(void)
 	u8 i;
 	NRF24L01_Write_Buf(NRF_WRITE_REG+TX_ADDR,buf,5);//写入5个字节的地址.	
 	NRF24L01_Read_Buf(TX_ADDR,buf,5); //读出写入的地址  
-	for(i=0;i<5;i++)if(buf[i]!=0XA5)break;	 							   
+	for(i=0;i<5;i++)if(buf[i]!=0XA5)break;//如果读取的地址不是写入的地址	 							   
 	if(i!=5)return 1;//检测24L01错误	
 	return 0;		 //检测到24L01
 }

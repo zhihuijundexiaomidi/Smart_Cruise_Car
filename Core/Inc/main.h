@@ -73,8 +73,6 @@ void Error_Handler(void);
 #define infrared_sensor_right_Pin GPIO_PIN_1
 #define infrared_sensor_right_GPIO_Port GPIOB
 #define infrared_sensor_right_EXTI_IRQn EXTI1_IRQn
-#define SPI_IRQ_Pin GPIO_PIN_2
-#define SPI_IRQ_GPIO_Port GPIOB
 #define TB6612_A1_Pin GPIO_PIN_12
 #define TB6612_A1_GPIO_Port GPIOB
 #define TB6612_A0_Pin GPIO_PIN_13
@@ -93,6 +91,8 @@ void Error_Handler(void);
 #define SPI_CE_GPIO_Port GPIOA
 #define SPI_CSN_Pin GPIO_PIN_12
 #define SPI_CSN_GPIO_Port GPIOA
+#define SPI_IRQ_Pin GPIO_PIN_15
+#define SPI_IRQ_GPIO_Port GPIOA
 #define TB6612_E2A_Pin GPIO_PIN_6
 #define TB6612_E2A_GPIO_Port GPIOB
 #define TB6612_E2B_Pin GPIO_PIN_7

@@ -7,7 +7,7 @@
 extern  float pitch,roll,yaw; 		//欧拉角
 extern	short aacx,aacy,aacz;		//加速度传感器原始数据
 extern	short gyrox,gyroy,gyroz;	//陀螺仪原始数据
-extern	short temp;					//温度
+extern	float temp;					//温度
 
 
 //MPU6050 AD0控制脚
@@ -104,7 +104,7 @@ u8 MPU_Set_Rate(u16 rate);
 u8 MPU_Set_Fifo(u8 sens);
 
 
-short MPU_Get_Temperature(void);
+float MPU_Get_Temperature(void);
 u8 MPU_Get_Gyroscope(short *gx,short *gy,short *gz);
 u8 MPU_Get_Accelerometer(short *ax,short *ay,short *az);
 
