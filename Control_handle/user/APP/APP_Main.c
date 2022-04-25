@@ -26,7 +26,7 @@ osThreadId Task02_TaskHandle;
 const osThreadAttr_t osID_Task02 = {
   .name = "osID_Task02",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal7,
+  .priority = (osPriority_t) osPriorityNormal5,
 };
 
 void Task03(void * argument);
@@ -42,7 +42,7 @@ osThreadId Task04_TaskHandle;
 const osThreadAttr_t osID_Task04 = {
   .name = "osID_Task04",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal5,
+  .priority = (osPriority_t) osPriorityNormal7,
 };
 
 void APP_Main(void) {
@@ -143,11 +143,12 @@ void Task04(void * argument)
 			printf("NRF24L01_Check erro \r\n");
 			osDelay(1000);
 	}
-
+	printf("NRF24L01_Check suc \r\n");
 	NRF24L01_TX_Mode();
   for(;;)
   {
 		sprintf((char*)rx_buf,"AT+MPU6050=pitch:%0.1f,roll:%0.1f,yaw:%0.1f \r\n",pitch,roll,yaw);
+		printf("AT+MPU6050=pitch:%0.1f,roll:%0.1f,yaw:%0.1f \r\n",pitch,roll,yaw);
 		NRF24L01_TxPacket(rx_buf);
 //    printf("NRF24L01_TxPacket suc \r\n");
 		osDelay(200);

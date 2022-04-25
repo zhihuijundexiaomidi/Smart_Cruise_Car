@@ -120,14 +120,13 @@ void Task03(void * argument)
 {
 	static unsigned int t=0;
   u8 rx_buf[33]="www.prechin.cn";
-	NRF24L01_Init();	
 	while(NRF24L01_Check())	 //检测NRF24L01是否存在
 	{
 		printf("Error   \r\n");	
 		osDelay(1000);		
 	}
 	printf("Success   \r\n");
-  NRF24L01_RX_Mode();	
+	NRF24L01_Init();
   for(;;)
   {
 		if(NRF24L01_RxPacket(rx_buf)==0) //接收到数据显示
