@@ -7,6 +7,7 @@
 //NRF24L01寄存器操作命令
 #define NRF_READ_REG    0x00  //读配置寄存器,低5位为寄存器地址
 #define NRF_WRITE_REG   0x20  //写配置寄存器,低5位为寄存器地址
+#define R_RX_PL_WID     0x60  //读取接收数据长度
 #define RD_RX_PLOAD     0x61  //读RX有效数据,1~32字节
 #define WR_TX_PLOAD     0xA0  //写TX有效数据,1~32字节
 #define FLUSH_TX        0xE1  //清除TX FIFO寄存器.发射模式下用
@@ -45,6 +46,9 @@
 #define RX_PW_P5        0x16  //接收数据通道5有效数据宽度(1~32字节),设置为0则非法
 #define NRF_FIFO_STATUS 0x17  //FIFO状态寄存器;bit0,RX FIFO寄存器空标志;bit1,RX FIFO满标志;bit2,3,保留
                               //bit4,TX FIFO空标志;bit5,TX FIFO满标志;bit6,1,循环发送上一数据包.0,不循环;
+#define DYNPD        	  0x1C  //动态长度地址;bit7~6,只允许'00';bit5~0,分别对应使能动态有效数据长度数据通道5~0
+#define FEATURE        	0x1D  //功能寄存器地址;bit7~3,只允许'0000';bit2,使能动态有效数据长度;
+							  //bit1,使能ACK有效数据;bit0,使能'W_TX_PAYLOAD_NOACK'命令
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //24L01操作线
 #define NRF24L01_CE(x)  		 		HAL_GPIO_WritePin(SPI_CE_GPIO_Port, SPI_CE_Pin, x);//24L01片选信号
@@ -53,10 +57,15 @@
 //24L01发送接收数据宽度定义
 #define TX_ADR_WIDTH    5   	//5字节的地址宽度
 #define RX_ADR_WIDTH    5   	//5字节的地址宽度
+#define DYNPD_enable		0			//动态数据宽度是否开启。1：开启，0：关闭
 #define TX_PLOAD_WIDTH  32  	//32字节的用户数据宽度
 #define RX_PLOAD_WIDTH  32  	//32字节的用户数据宽度
-									   	   
 
+#ifdef RX_PLOAD_WIDTH
+u8 NRF24L01_TxPacket(u8 *txbuf);				//发送一个包的数据
+#else									   	   
+u8 NRF24L01_TxPacket(u8 *txbuf,u8 TX_PLOAD_WIDTH);
+#endif
 void NRF24L01_Init(void);						//初始化
 void NRF24L01_RX_Mode(void);					//配置为接收模式
 void NRF24L01_TX_Mode(void);					//配置为发送模式
@@ -65,7 +74,7 @@ u8 NRF24L01_Read_Buf(u8 reg, u8 *pBuf, u8 u8s);	//读数据区
 u8 NRF24L01_Read_Reg(u8 reg);					//读寄存器
 u8 NRF24L01_Write_Reg(u8 reg, u8 value);		//写寄存器
 u8 NRF24L01_Check(void);						//检查24L01是否存在
-u8 NRF24L01_TxPacket(u8 *txbuf);				//发送一个包的数据
+
 u8 NRF24L01_RxPacket(u8 *rxbuf);				//接收一个包的数据
 
 #endif

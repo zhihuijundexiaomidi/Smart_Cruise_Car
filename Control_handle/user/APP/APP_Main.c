@@ -137,20 +137,20 @@ void Task03(void * argument)
 void Task04(void * argument)
 {
   u8 rx_buf[33]="www.prechin.cn";
-	NRF24L01_Init();
 	while(NRF24L01_Check())	//ºÏ≤‚NRF24L01 «∑Ò¥Ê‘⁄
 	{
 			printf("NRF24L01_Check erro \r\n");
 			osDelay(1000);
 	}
 	printf("NRF24L01_Check suc \r\n");
-	NRF24L01_TX_Mode();
+	NRF24L01_Init();
   for(;;)
   {
-		sprintf((char*)rx_buf,"AT+MPU6050=pitch:%0.1f,roll:%0.1f,yaw:%0.1f \r\n",pitch,roll,yaw);
+		NRF24L01_RxPacket(rx_buf);
+		printf("%s \r\n",rx_buf);
+		sprintf((char*)rx_buf,"AT+MPU6050=p:%0.1f,r:%0.1f,y:%0.1f",pitch,roll,yaw);
 		printf("AT+MPU6050=pitch:%0.1f,roll:%0.1f,yaw:%0.1f \r\n",pitch,roll,yaw);
 		NRF24L01_TxPacket(rx_buf);
-//    printf("NRF24L01_TxPacket suc \r\n");
 		osDelay(200);
   }
 }

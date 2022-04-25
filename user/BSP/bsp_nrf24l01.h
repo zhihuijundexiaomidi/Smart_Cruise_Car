@@ -62,6 +62,7 @@
 #define RX_PLOAD_WIDTH  32  	//32字节的用户数据宽度
 
 #ifdef RX_PLOAD_WIDTH
+u8 NRF24L01_TxPacket(u8 *txbuf);				//发送一个包的数据
 #else									   	   
 u8 NRF24L01_TxPacket(u8 *txbuf,u8 TX_PLOAD_WIDTH);
 #endif
@@ -73,7 +74,7 @@ u8 NRF24L01_Read_Buf(u8 reg, u8 *pBuf, u8 u8s);	//读数据区
 u8 NRF24L01_Read_Reg(u8 reg);					//读寄存器
 u8 NRF24L01_Write_Reg(u8 reg, u8 value);		//写寄存器
 u8 NRF24L01_Check(void);						//检查24L01是否存在
-u8 NRF24L01_TxPacket(u8 *txbuf);				//发送一个包的数据
+
 u8 NRF24L01_RxPacket(u8 *rxbuf);				//接收一个包的数据
 
 #endif

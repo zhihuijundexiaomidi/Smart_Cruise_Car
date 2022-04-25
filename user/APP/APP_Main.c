@@ -119,7 +119,7 @@ void Task02(void * argument)
 void Task03(void * argument)
 {
 	static unsigned int t=0;
-  u8 rx_buf[33]="www.prechin.cn";
+  u8 rx_buf[33]="";
 	while(NRF24L01_Check())	 //检测NRF24L01是否存在
 	{
 		printf("Error   \r\n");	
@@ -132,7 +132,7 @@ void Task03(void * argument)
 		if(NRF24L01_RxPacket(rx_buf)==0) //接收到数据显示
 			{
 				rx_buf[32]='\0';
-			  printf("%s",rx_buf);		
+			  printf("%s\r\n",rx_buf);		
 			}
 			else
 			{
@@ -142,6 +142,7 @@ void Task03(void * argument)
 			if(t>=10)
 			{
 				t=0;
+				NRF24L01_TxPacket("NRF24L01_TxPacket suc");
 				printf("1S   \r\n");			
 			}	
   }

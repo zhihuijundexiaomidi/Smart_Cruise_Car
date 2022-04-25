@@ -4,6 +4,8 @@ u8 rf_read_modeflag=0;
 u8 rf_len;						//接收长度
 #ifdef RX_PLOAD_WIDTH
 u8 rf_rxbuf[RX_PLOAD_WIDTH];	//接收数据组（32位）
+#else
+u8 rf_rxbuf[100];	//接收数据组（100位）
 #endif
 u8 rf_flag;						//接收标志
 
@@ -20,13 +22,12 @@ void NRF24L01_Init(void)
 	NRF24L01_Write_Reg(NRF_WRITE_REG+EN_RXADDR,0x01);//使能通道0的接收地址  	
 	NRF24L01_Write_Reg(NRF_WRITE_REG+SETUP_RETR,0x1a);//设置自动重发间隔时间:500us + 86us;最大自动重发次数:10次
 	NRF24L01_Write_Reg(NRF_WRITE_REG+SETUP_AW,0x03);  //设置地址宽度(所有数据通道)02,4字节;03五字节宽度。
-//  NRF24L01_Write_Reg(NRF_WRITE_REG+RX_PW_P0,RX_PLOAD_WIDTH);//选择通道0的有效数据宽度 
 	NRF24L01_Write_Reg(NRF_WRITE_REG+RF_SETUP,0x0f);  //设置TX发射参数,0db增益,2Mbps,低噪声增益开启   
 	NRF24L01_Write_Reg(NRF_WRITE_REG+RF_CH,40);	     //设置RF通信频率	,即是通信通道。
 #ifdef RX_PLOAD_WIDTH
-
+  NRF24L01_Write_Reg(NRF_WRITE_REG+RX_PW_P0,RX_PLOAD_WIDTH);//选择通道0的有效数据宽度 
 #else
-	{	NRF24L01_Write_Reg(NRF_WRITE_REG+DYNPD,0X3F);}	     //使能动态有效数据长度数据通道0-5
+	{	NRF24L01_Write_Reg(NRF_WRITE_REG+DYNPD,0X3F);}	     //使能动态有效数据宽度数据通道0-5
 #endif
 	NRF24L01_Write_Reg(NRF_WRITE_REG+STATUS,0xff);		//清空状态寄存器
 	NRF24L01_RX_Mode();	
