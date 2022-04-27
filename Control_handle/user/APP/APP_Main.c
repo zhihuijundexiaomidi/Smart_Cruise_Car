@@ -2,6 +2,7 @@
 #include "task.h"
 #include "cmsis_os.h"
 #include <stdio.h>
+#include <string.h>
 #include "App_Main.h"
 
 #include "bsp_led.h"  
@@ -84,6 +85,7 @@ void Task02(void * argument)
   OLED_ShowString(0,2,"roll:    ",12);
   OLED_ShowString(0,3,"yaw:     ",12);
 	OLED_ShowString(0,4,"r:     ",12);
+	OLED_ShowString(0,5,"mode:     ",12);
   for(;;)
   {
 		sprintf(str,"%0.2f     ",temp);
@@ -104,7 +106,7 @@ int NRF24L01_Init_sucflag=0;
 void Task03(void * argument)
 {
 	MPU_Init();							//初始化MPU6050
-
+	char str[32]="";
   while(mpu_dmp_init())		//dmp初始化
  	{
 		printf ("MPU6050 Error\r\n");
@@ -136,6 +138,16 @@ void Task03(void * argument)
 		}
 		if(NRF24L01_Init_sucflag==1)
 		error=NRF24L01_RxPacket(rf_rxbuf);
+		if(strstr((const char *)(rf_rxbuf), "HANDLE MODE") != NULL)
+		{
+				snprintf(str,11,"HANDLE MODE  ");
+				OLED_ShowString(40,5,(u8*)str,12);
+		}	
+		if(strstr((const char *)(rf_rxbuf), "SMART MODE") != NULL)
+		{
+				snprintf(str,11,"SMART MODE   ");
+				OLED_ShowString(40,5,(u8*)str,12);
+		}	
 //		printf("NRF24L01_RxPacket %d \r\n",error);
 		osDelay(100);
   }
@@ -143,6 +155,7 @@ void Task03(void * argument)
 
 void Task04(void * argument)
 {
+	int mode = 1;//寻迹模式
 	while(NRF24L01_Check())	//检测NRF24L01是否存在
 	{
 			printf("NRF24L01_Check erro \r\n");
@@ -158,41 +171,56 @@ void Task04(void * argument)
 	
 //		sprintf((char*)rx_buf,"AT+MPU6050=p:%0.1f,r:%0.1f,y:%0.1f",pitch,roll,yaw);
 //		printf("AT+MPU6050=pitch:%0.1f,roll:%0.1f,yaw:%0.1f \r\n",pitch,roll,yaw);
+		if(-20<pitch && pitch<20 && roll<20 && roll>-20)
+		{
+			snprintf(rf_txbuf,32,"AT+CMD=STOP");
+			NRF24L01_TxPacket((u8*)rf_txbuf);
+			printf("%s \r\n",rf_txbuf);
+			osDelay(100);
+		}
 		if(pitch>20)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=B,%0.1f",pitch);
 			NRF24L01_TxPacket((u8*)rf_txbuf);
 			printf("%s \r\n",rf_txbuf);
+			osDelay(100);
 		}
 		if(pitch<-20)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=F,%0.1f",pitch);
 			NRF24L01_TxPacket((u8*)rf_txbuf);
 			printf("%s \r\n",rf_txbuf);
+			osDelay(100);
 		}
 		if(roll>20)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=L,%0.1f",roll);
 			NRF24L01_TxPacket((u8*)rf_txbuf);
 			printf("%s \r\n",rf_txbuf);
+			osDelay(100);
 		}
 		if(roll<-20)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=R,%0.1f",roll);
 			NRF24L01_TxPacket((u8*)rf_txbuf);
 			printf("%s \r\n",rf_txbuf);
+			osDelay(100);
 		}
-		if(yaw>20)
+		if(yaw>40 && mode == 1)
 		{
+			mode = 0;
 			snprintf(rf_txbuf,32,"AT+CMD=HANDLE");
 			NRF24L01_TxPacket((u8*)rf_txbuf);
 			printf("%s \r\n",rf_txbuf);
+			osDelay(100);
 		}
-		if(yaw<-20)
+		if(yaw<-40 && mode == 0)
 		{
+			mode = 1;
 			snprintf(rf_txbuf,32,"AT+CMD=SMART");
 			NRF24L01_TxPacket((u8*)rf_txbuf);
 			printf("%s \r\n",rf_txbuf);
+			osDelay(100);
 		}
 //		if(NRF24L01_Init_sucflag==1)
 //		error=NRF24L01_RxPacket(rf_rxbuf);

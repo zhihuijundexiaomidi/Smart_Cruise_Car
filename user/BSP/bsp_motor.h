@@ -35,10 +35,10 @@ extern TIM_HandleTypeDef htim3;
 
 #define CAR_STOP {HAL_GPIO_WritePin(GPIOB, L_wheel_A|L_wheel_B|R_wheel_A|R_wheel_B, GPIO_PIN_RESET);}
 
-void forward_run(void);
-void back_run(void);
-void left_run(void);
-void right_run(void);
+void forward_run(int TargetVelocity,int TargetCircle);
+void back_run(int TargetVelocity,int TargetCircle);
+void left_run(int TargetVelocity,int TargetCircle);
+void right_run(int TargetVelocity,int TargetCircle);
 void car_stop(void);
 
 

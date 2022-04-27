@@ -2,6 +2,8 @@
 #include "task.h"
 #include "cmsis_os.h"
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "App_Main.h"
 
 #include "bsp_led.h"  
@@ -61,8 +63,8 @@ void APP_Main(void)
     //定义线程任务03
   Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务03
 //	    //定义线程任务04
-//  Task04_TaskHandle = osThreadNew(Task04, NULL, &osID_Task04);//创建线程任务04
-//	Task05_TaskHandle = osThreadNew(Task05, NULL, &osID_Task05);//创建线程任务05
+  Task04_TaskHandle = osThreadNew(Task04, NULL, &osID_Task04);//创建线程任务04
+	Task05_TaskHandle = osThreadNew(Task05, NULL, &osID_Task05);//创建线程任务05
 }
 
 
@@ -76,7 +78,7 @@ void Task01(void * argument)
 		led_twinkle(100);
   }
 }
-
+int car_mode = 0;//寻迹模式
 void Task02(void * argument)
 {
 		EventBits_t r_event;  /* 定义一个事件接收变量 */
@@ -107,19 +109,26 @@ void Task02(void * argument)
 																		pdTRUE,   /* 退出时清除事件位 */
 																		pdFALSE,   /* 满足感兴趣的所有事件 */
 																		portMAX_DELAY);/* 指定超时事件,一直等 */
-      
-//			printf ( "r_event is %d \r\n",r_event);										
-			check_app();
-//			printf ( "check_app成功\r\n");
-		}
-//		osDelay(100);
+			if(car_mode==0)
+			{
+				check_app();
+			}
+			else
+			{
+				osDelay(1000);
+			}						
+		}	
   }
 }
 
 void Task03(void * argument)
 {
-	static unsigned int t=0;
+	char *maintain_addr;
+	int maintain_value;
+	char car_value[8]="";
+	u8 i;
   u8 rx_buf[33]="";
+
 	while(NRF24L01_Check())	 //检测NRF24L01是否存在
 	{
 		printf("Error   \r\n");	
@@ -130,21 +139,81 @@ void Task03(void * argument)
   for(;;)
   {
 		if(NRF24L01_RxPacket(rx_buf)==0) //接收到数据显示
+		{
+			if(car_mode==0)
 			{
-				rx_buf[32]='\0';
-			  printf("%s\r\n",rx_buf);		
+				if(strstr((const char *)(rx_buf), "AT+CMD=HANDLE") != NULL)
+				{NRF24L01_TxPacket("HANDLE MODE");car_mode=1;	printf("%s\r\n",rx_buf);}	
+			
 			}
 			else
 			{
-				osDelay(100);
+				if(strstr((const char *)(rx_buf), "AT+CMD=SMART") != NULL)
+				{NRF24L01_TxPacket("SMART MODE");	car_mode=0;				printf("%s\r\n",rx_buf);}
+
 			}
-			t++;
-			if(t>=10)
+			if(car_mode==1)
 			{
-				t=0;
-				NRF24L01_TxPacket("NRF24L01_TxPacket suc");
-				printf("1S   \r\n");			
-			}	
+				if(strstr((const char *)(rx_buf), "AT+CMD=STOP") != NULL)
+				{
+					printf("%s\r\n",rx_buf);
+					car_stop();
+				}
+				if(strstr((const char *)(rx_buf), "AT+CMD=B") != NULL)
+				{
+					printf("%s\r\n",rx_buf);
+					maintain_addr=strstr((const char *)(rx_buf), "=");
+            maintain_addr+=3;
+            for(i=0;i<8;i++)
+            {
+                car_value[i]=*maintain_addr;
+                maintain_addr+=1;
+            }               
+            printf("car_value:%d \r\n",atoi(car_value));
+						back_run(atoi(car_value)-20,100);
+				}
+				if(strstr((const char *)(rx_buf), "AT+CMD=F") != NULL)
+				{
+					printf("%s\r\n",rx_buf);
+					maintain_addr=strstr((const char *)(rx_buf), "=");
+            maintain_addr+=3;
+            for(i=0;i<8;i++)
+            {
+                car_value[i]=*maintain_addr;
+                maintain_addr+=1;
+            }               
+            printf("car_value:%d \r\n",atoi(car_value));
+						forward_run(-atoi(car_value)-20,100);
+				}
+				if(strstr((const char *)(rx_buf), "AT+CMD=L") != NULL)
+				{
+						printf("%s\r\n",rx_buf);
+					  maintain_addr=strstr((const char *)(rx_buf), "=");
+            maintain_addr+=3;
+            for(i=0;i<8;i++)
+            {
+                car_value[i]=*maintain_addr;
+                maintain_addr+=1;
+            }               
+            printf("car_value:%d \r\n",atoi(car_value));
+						steering_engine_PWM((1600-950)*atoi(car_value)/60+950);
+				}
+				if(strstr((const char *)(rx_buf), "AT+CMD=R") != NULL)
+				{
+						printf("%s\r\n",rx_buf);
+					  maintain_addr=strstr((const char *)(rx_buf), "=");
+            maintain_addr+=3;
+            for(i=0;i<8;i++)
+            {
+                car_value[i]=*maintain_addr;
+                maintain_addr+=1;
+            }               
+            printf("car_value:%d \r\n",atoi(car_value));
+						steering_engine_PWM(950-(950-600)*(-atoi(car_value))/60);
+				}
+			}			
+		}
+		osDelay(100);
   }
 }
 //编码器开始工作

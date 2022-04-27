@@ -25,17 +25,17 @@ void check_app(void)
 	}
 	if(left_state==state_off && right_state== state_on)
 	{
-		right_run();
+		right_run(10,100);
 //		printf("right_run();\r\n");
 	}
 	if(left_state==state_on && right_state== state_off)
 	{
-		left_run();
+		left_run(10,100);
 //		printf("left_run();\r\n");
 	}
 	if(left_state==state_off && right_state== state_off)
 	{
-		forward_run();
+		forward_run(10,100);
 //		printf("forward_run();\r\n");
 	}
 	

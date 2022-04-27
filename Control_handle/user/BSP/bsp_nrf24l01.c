@@ -16,8 +16,8 @@ u8 rf_rxbuf[100];	//接收数据组（100位）
 #endif
 u8 rf_flag;						//接收标志
 
-const char TX_ADDRESS[TX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //发送地址
-const char RX_ADDRESS[RX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //读取地址
+const char TX_ADDRESS[TX_ADR_WIDTH]={0x19,0x95,0x03,0x26,0x13}; //发送地址
+const char RX_ADDRESS[RX_ADR_WIDTH]={0x19,0x95,0x03,0x26,0x13}; //读取地址
 
 //初始化24L01的IO口
 void NRF24L01_Init(void)
@@ -188,9 +188,9 @@ u8 NRF24L01_RxPacket(u8 *rxbuf)
 	{	
 		#ifdef RX_PLOAD_WIDTH
 				NRF24L01_Read_Buf(RD_RX_PLOAD,rxbuf,RX_PLOAD_WIDTH);//读取数据	
-				rxbuf[32]='\0';
-				printf("%s \r\n",rxbuf);
-		    memset(rxbuf,0,33);
+//				rxbuf[32]='\0';
+//				printf("%s \r\n",rxbuf);
+//		    memset(rxbuf,0,33);
 		#else
 				rf_len = NRF24L01_Read_Reg(R_RX_PL_WID);			//读寄存器得到接收到的数据长度
 				NRF24L01_Read_Buf(RD_RX_PLOAD, rf_rxbuf, rf_len);	//把接收到的数据存的数组rf_rxbuf中
