@@ -25,15 +25,15 @@ void Task02(void * argument);
 osThreadId Task02_TaskHandle;
 const osThreadAttr_t osID_Task02 = {
   .name = "osID_Task02",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal5,
+  .stack_size = 128 * 8,
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
 
 void Task03(void * argument);
 osThreadId Task03_TaskHandle;
 const osThreadAttr_t osID_Task03 = {
   .name = "osID_Task03",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 8,
   .priority = (osPriority_t) osPriorityNormal6,
 };
 
@@ -41,7 +41,7 @@ void Task04(void * argument);
 osThreadId Task04_TaskHandle;
 const osThreadAttr_t osID_Task04 = {
   .name = "osID_Task04",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 8,
   .priority = (osPriority_t) osPriorityNormal7,
 };
 
@@ -49,9 +49,9 @@ void APP_Main(void) {
 
       //定义线程任务01
   Task01_TaskHandle = osThreadNew(Task01, NULL, &osID_Task01);//创建线程任务01
-////	    //定义线程任务02
+	    //定义线程任务02
   Task02_TaskHandle = osThreadNew(Task02, NULL, &osID_Task02);//创建线程任务02
-    //定义线程任务03
+//    //定义线程任务03
   Task03_TaskHandle = osThreadNew(Task03, NULL, &osID_Task03);//创建线程任务03
 	  //定义线程任务04
   Task04_TaskHandle = osThreadNew(Task04, NULL, &osID_Task04);//创建线程任务04
@@ -73,7 +73,7 @@ void Task01(void * argument)
 void Task02(void * argument)
 {
   uint8_t t=' ';
-	char str[10]="";
+	char str[32]="";
 	OLED_Init();			//初始化OLED  
 	OLED_Clear()  	;  
 	OLED_DrawBMP(0,2,128,8,BMP1);
@@ -94,12 +94,13 @@ void Task02(void * argument)
 		OLED_ShowString(40,2,(u8*)str,12);
 		sprintf(str,"%0.1f    ",yaw);
 		OLED_ShowString(32,3,(u8*)str,12);
-		sprintf(str,"%s               ",rf_rxbuf);
+		snprintf(str,10,"%s               ",rf_rxbuf);
 		OLED_ShowString(16,4,(u8*)str,12);
 		osDelay(100);
   }
 }
 
+int NRF24L01_Init_sucflag=0;
 void Task03(void * argument)
 {
 	MPU_Init();							//初始化MPU6050
@@ -133,8 +134,10 @@ void Task03(void * argument)
 //        printf ("得到温度值：%d\r\n",temp);
 //				printf ("得到欧角:pitch：%0.1f\r\n roll：%0.1f\r\n yaw：%0.1f\r\n",pitch,roll,yaw);
 		}
-		NRF24L01_RxPacket(rf_rxbuf);
-		osDelay(10);
+		if(NRF24L01_Init_sucflag==1)
+		error=NRF24L01_RxPacket(rf_rxbuf);
+//		printf("NRF24L01_RxPacket %d \r\n",error);
+		osDelay(100);
   }
 }
 
@@ -147,6 +150,9 @@ void Task04(void * argument)
 	}
 	printf("NRF24L01_Check suc \r\n");
 	NRF24L01_Init();
+	NRF24L01_Init_sucflag=1;
+	char rf_txbuf[TX_PLOAD_WIDTH+1];	//发送数据组（32位）
+	int error = 0;
   for(;;)
   {
 	
@@ -156,33 +162,41 @@ void Task04(void * argument)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=B,%0.1f",pitch);
 			NRF24L01_TxPacket((u8*)rf_txbuf);
+			printf("%s \r\n",rf_txbuf);
 		}
 		if(pitch<-20)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=F,%0.1f",pitch);
 			NRF24L01_TxPacket((u8*)rf_txbuf);
+			printf("%s \r\n",rf_txbuf);
 		}
 		if(roll>20)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=L,%0.1f",roll);
 			NRF24L01_TxPacket((u8*)rf_txbuf);
+			printf("%s \r\n",rf_txbuf);
 		}
 		if(roll<-20)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=R,%0.1f",roll);
 			NRF24L01_TxPacket((u8*)rf_txbuf);
+			printf("%s \r\n",rf_txbuf);
 		}
 		if(yaw>20)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=HANDLE");
 			NRF24L01_TxPacket((u8*)rf_txbuf);
+			printf("%s \r\n",rf_txbuf);
 		}
 		if(yaw<-20)
 		{
 			snprintf(rf_txbuf,32,"AT+CMD=SMART");
 			NRF24L01_TxPacket((u8*)rf_txbuf);
+			printf("%s \r\n",rf_txbuf);
 		}
-		
+//		if(NRF24L01_Init_sucflag==1)
+//		error=NRF24L01_RxPacket(rf_rxbuf);
+//		printf("NRF24L01_RxPacket %d \r\n",error);
 		osDelay(100);
   }
 }

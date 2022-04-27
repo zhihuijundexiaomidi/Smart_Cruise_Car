@@ -252,7 +252,7 @@ void OLED_Init(void)
 	OLED_WR_Byte(0xA8,OLED_CMD);//--set multiplex ratio(1 to 64)设置多重比（A8h）
 	OLED_WR_Byte(63,OLED_CMD);//--16到63 duty此命令将默认的63多路模式切换为任何多路比率，范围从16到63。输出垫COM0~COM63将被切换到相应的COM信号。
 
-	OLED_WR_Byte(0xB0,OLED_CMD);//设置页面寻址模式的页面起始地址(B0h~B7h)Set Page Start Address for Page Addressing Mode (B0h~B7h)
+//	OLED_WR_Byte(0xB0,OLED_CMD);//设置页面寻址模式的页面起始地址(B0h~B7h)Set Page Start Address for Page Addressing Mode (B0h~B7h)
 	OLED_WR_Byte(0xC8,OLED_CMD);//Set COM/Row Scan Direction   0xc0上下反置 0xc8正常
 
 	OLED_WR_Byte(0xD3,OLED_CMD);//设置显示偏移（D3h）-set display offset	Shift Mapping RAM Counter (0x00~0x3F)
