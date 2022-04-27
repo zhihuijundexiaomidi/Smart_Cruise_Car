@@ -45,7 +45,9 @@
 
 #define OLED_CMD  0	//写命令
 #define OLED_DATA 1	//写数据
-
+//-----------------OLEDcmd指令定义----------------  
+#define SetColumnAddress (0x21)//设置列地址
+#define SetPageAddress (0X22)//设置页面地址
 
 //OLED控制用函数
 void OLED_WR_Byte(u8 dat,u8 cmd);	    

@@ -7,10 +7,15 @@ u8 rf_rxbuf[RX_PLOAD_WIDTH];	//接收数据组（32位）
 #else
 u8 rf_rxbuf[100];	//接收数据组（100位）
 #endif
+#ifdef TX_PLOAD_WIDTH
+char rf_txbuf[TX_PLOAD_WIDTH];	//发送数据组（32位）
+#else
+u8 rf_rxbuf[100];	//接收数据组（100位）
+#endif
 u8 rf_flag;						//接收标志
 
-const char TX_ADDRESS[TX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //发送地址
-const char RX_ADDRESS[RX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //读取地址
+const char TX_ADDRESS[TX_ADR_WIDTH]={0x19,0x95,0x03,0x26,0x13}; //发送地址
+const char RX_ADDRESS[RX_ADR_WIDTH]={0x19,0x95,0x03,0x26,0x13}; //读取地址
 
 //初始化24L01的IO口
 void NRF24L01_Init(void)
@@ -168,7 +173,7 @@ u8 NRF24L01_TxPacket(u8 *txbuf,u8 TX_PLOAD_WIDTH)
 }
 
 #endif
-//启动NRF24L01发送一次数据
+//启动NRF24L01接收一次数据
 //txbuf:待发送数据首地址
 //返回值:0，接收完成；其他，错误代码
 u8 NRF24L01_RxPacket(u8 *rxbuf)

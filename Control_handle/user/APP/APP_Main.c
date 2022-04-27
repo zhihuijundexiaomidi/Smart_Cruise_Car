@@ -83,6 +83,7 @@ void Task02(void * argument)
   OLED_ShowString(0,1,"pitch:   ",12);
   OLED_ShowString(0,2,"roll:    ",12);
   OLED_ShowString(0,3,"yaw:     ",12);
+	OLED_ShowString(0,4,"r:     ",12);
   for(;;)
   {
 		sprintf(str,"%0.2f     ",temp);
@@ -93,7 +94,9 @@ void Task02(void * argument)
 		OLED_ShowString(40,2,(u8*)str,12);
 		sprintf(str,"%0.1f    ",yaw);
 		OLED_ShowString(32,3,(u8*)str,12);
-		osDelay(1000);
+		sprintf(str,"%s               ",rf_rxbuf);
+		OLED_ShowString(16,4,(u8*)str,12);
+		osDelay(100);
   }
 }
 
@@ -130,13 +133,13 @@ void Task03(void * argument)
 //        printf ("得到温度值：%d\r\n",temp);
 //				printf ("得到欧角:pitch：%0.1f\r\n roll：%0.1f\r\n yaw：%0.1f\r\n",pitch,roll,yaw);
 		}
-		osDelay(100);
+		NRF24L01_RxPacket(rf_rxbuf);
+		osDelay(10);
   }
 }
 
 void Task04(void * argument)
 {
-  u8 rx_buf[33]="www.prechin.cn";
 	while(NRF24L01_Check())	//检测NRF24L01是否存在
 	{
 			printf("NRF24L01_Check erro \r\n");
@@ -146,12 +149,41 @@ void Task04(void * argument)
 	NRF24L01_Init();
   for(;;)
   {
-		NRF24L01_RxPacket(rx_buf);
-		printf("%s \r\n",rx_buf);
-		sprintf((char*)rx_buf,"AT+MPU6050=p:%0.1f,r:%0.1f,y:%0.1f",pitch,roll,yaw);
-		printf("AT+MPU6050=pitch:%0.1f,roll:%0.1f,yaw:%0.1f \r\n",pitch,roll,yaw);
-		NRF24L01_TxPacket(rx_buf);
-		osDelay(200);
+	
+//		sprintf((char*)rx_buf,"AT+MPU6050=p:%0.1f,r:%0.1f,y:%0.1f",pitch,roll,yaw);
+//		printf("AT+MPU6050=pitch:%0.1f,roll:%0.1f,yaw:%0.1f \r\n",pitch,roll,yaw);
+		if(pitch>20)
+		{
+			snprintf(rf_txbuf,32,"AT+CMD=B,%0.1f",pitch);
+			NRF24L01_TxPacket((u8*)rf_txbuf);
+		}
+		if(pitch<-20)
+		{
+			snprintf(rf_txbuf,32,"AT+CMD=F,%0.1f",pitch);
+			NRF24L01_TxPacket((u8*)rf_txbuf);
+		}
+		if(roll>20)
+		{
+			snprintf(rf_txbuf,32,"AT+CMD=L,%0.1f",roll);
+			NRF24L01_TxPacket((u8*)rf_txbuf);
+		}
+		if(roll<-20)
+		{
+			snprintf(rf_txbuf,32,"AT+CMD=R,%0.1f",roll);
+			NRF24L01_TxPacket((u8*)rf_txbuf);
+		}
+		if(yaw>20)
+		{
+			snprintf(rf_txbuf,32,"AT+CMD=HANDLE");
+			NRF24L01_TxPacket((u8*)rf_txbuf);
+		}
+		if(yaw<-20)
+		{
+			snprintf(rf_txbuf,32,"AT+CMD=SMART");
+			NRF24L01_TxPacket((u8*)rf_txbuf);
+		}
+		
+		osDelay(100);
   }
 }
 

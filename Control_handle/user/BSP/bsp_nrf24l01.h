@@ -77,4 +77,7 @@ u8 NRF24L01_Check(void);						//检查24L01是否存在
 
 u8 NRF24L01_RxPacket(u8 *rxbuf);				//接收一个包的数据
 
+extern u8 rf_rxbuf[RX_PLOAD_WIDTH];
+extern char rf_txbuf[TX_PLOAD_WIDTH];
+
 #endif
